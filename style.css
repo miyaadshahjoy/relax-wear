@@ -1,0 +1,473 @@
+/*
+Theme Name:   Astra Child
+Theme URI:    http://example.com/astra-child/
+Description:  Child Theme for Relax Wear
+Author:       Devxhub
+Author URI:   http://example.com
+Template:     astra
+Version:      1.0.0
+*/
+
+/*Custom CSS */
+
+/*
+  --border-color: #ddd;
+*/
+
+/* LEAD FORM STYLES */
+.dx-lead-form-container {
+  width: 100%;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.dx-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dx-form-group input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  outline: none;
+}
+.dx-form-group input:focus {
+  border: 1px solid #000;
+  outline: none;
+}
+.dx-submit-btn {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+}
+.required {
+  color: red;
+}
+
+/* PRODUCT SALES PAGE STYLES */
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  font-weight: 700;
+  border-radius: 6px;
+  text-align: center;
+  outline: none;
+  transition:
+    transform 0.1s ease,
+    background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 2px solid #2d3748;
+  color: #2d3748;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+
+.btn-secondary:hover {
+  background-color: #2d3748;
+  color: #ffffff;
+}
+
+/* High-Contrast Conversion Optimized Primary CTA Button */
+.btn-primary {
+  background-color: #ff5a00; /* Vibrant, eye-catching action orange */
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 14px rgba(255, 90, 0, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary:hover {
+  background-color: #e04f00;
+}
+
+.btn-large {
+  padding: 16px 32px;
+  font-size: 1.1rem;
+}
+
+/* The ultimate target element on the page */
+.btn-xlarge {
+  display: block;
+  width: 100%;
+  padding: 20px 40px;
+  font-size: 1.4rem;
+  font-weight: 800;
+  box-shadow: 0 6px 20px rgba(255, 90, 0, 0.4);
+  border: 2px solid #ffffff;
+}
+
+/* Placeholders */
+.placeholder-image {
+  background-color: #e2e8f0;
+  color: #718096;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 20px;
+}
+
+.icon-placeholder {
+  width: 48px;
+  height: 48px;
+  background-color: #edf2f7;
+  color: #4a5568;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  font-weight: bold;
+}
+
+/* Header */
+.header {
+  background-color: #ffffff;
+  border-bottom: 1px solid #edf2f7;
+  padding: 16px 0;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: -0.5px;
+}
+
+/* Hero Section */
+.hero {
+  background-color: #ffffff;
+  padding: 60px 0;
+}
+
+.hero-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.badge {
+  display: inline-block;
+  background-color: #edf2f7;
+  color: #4a5568;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin-bottom: 16px;
+}
+
+.hero-subtext {
+  font-size: 1.15rem;
+  color: #4a5568;
+  margin-bottom: 32px;
+}
+
+.hero-cta-group {
+  margin-bottom: 12px;
+}
+
+.cta-subtext {
+  font-size: 0.85rem;
+  color: #718096;
+  margin-top: 8px;
+}
+
+.hero-image {
+  min-height: 300px;
+  width: 100%;
+}
+
+/* Trust Bar */
+.trust-bar {
+  padding: 32px 0;
+  border-top: 1px solid #edf2f7;
+  border-bottom: 1px solid #edf2f7;
+  background-color: #ffffff;
+  text-align: center;
+}
+
+.trust-text {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #a0aec0;
+  margin-bottom: 16px;
+}
+
+.logo-grid {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.logo-placeholder {
+  color: #cbd5e0;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Features Section */
+.features {
+  padding: 80px 0;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 48px;
+  letter-spacing: -0.5px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+.feature-card {
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.feature-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 12px;
+}
+
+.feature-card p {
+  color: #4a5568;
+  font-size: 0.95rem;
+}
+
+/* Testimonial Section */
+.testimonial-section {
+  background-color: #ffffff;
+  padding: 80px 0;
+  border-top: 1px solid #edf2f7;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.testimonial {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.quote {
+  font-size: 1.5rem;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 24px;
+}
+
+.author strong {
+  display: block;
+  font-size: 1rem;
+  color: #2d3748;
+}
+
+.author span {
+  font-size: 0.85rem;
+  color: #718096;
+}
+
+/*  Order Section (The Closing Pitch) */
+.order-section {
+  padding: 80px 0;
+  background-color: #f7fafc;
+}
+
+.order-box {
+  background-color: #ffffff;
+  border: 2px solid #2d3748; /* Frame structural emphasis */
+  border-radius: 12px;
+  padding: 40px 24px;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.order-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.order-subtitle {
+  color: #4a5568;
+  margin-bottom: 32px;
+}
+
+.price-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.original-price {
+  font-size: 1.5rem;
+  text-decoration: line-through;
+  color: #a0aec0;
+}
+
+.current-price {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #2d3748;
+}
+
+.price-tag {
+  background-color: #c6f6d5;
+  color: #22543d;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.value-bullets {
+  list-style: none;
+  text-align: left;
+  max-width: 320px;
+  margin: 0 auto 32px auto;
+}
+
+.value-bullets li {
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+  color: #2d3748;
+  font-weight: 500;
+}
+
+.security-badges {
+  margin-top: 16px;
+  font-size: 0.8rem;
+  color: #718096;
+}
+
+/* Footer */
+.footer {
+  background-color: #1a202c;
+  color: #a0aec0;
+  padding: 40px 0;
+  font-size: 0.85rem;
+}
+
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-links a {
+  color: #a0aec0;
+  text-decoration: none;
+  margin: 0 12px;
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+}
+
+/* Responsive Media Queries (Tablets & Desktops) */
+@media (min-width: 768px) {
+  .hero-container {
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 60px;
+  }
+
+  .hero h1 {
+    font-size: 3.5rem;
+  }
+
+  .features-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .order-box {
+    padding: 60px;
+  }
+
+  .footer-container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+/* WooCommerce Payment Methods Mobile Optimization */
+.woocommerce-checkout #payment ul.payment_methods li {
+  padding: 15px !important;
+  margin-bottom: 10px;
+  border: 2px solid #e5e5e5;
+  border-radius: 8px;
+  background: #fafafa;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* যখন কোনো পেমেন্ট মেথড সিলেক্ট হবে তখন বর্ডার গ্রিন হবে */
+.woocommerce-checkout #payment ul.payment_methods li has(:checked) {
+  border-color: #28a745;
+  background: #ffffff;
+}
+
+.woocommerce-checkout #payment ul.payment_methods li label {
+  font-weight: bold;
+  font-size: 16px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+/* +++++++++++++++++++++ */
