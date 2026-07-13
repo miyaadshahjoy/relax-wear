@@ -3,15 +3,94 @@
 function dx_get_product_bump_config()
 {
   return [
-    47 => [
+    39 => [
+      "offer_product_id" => 45,
+      "offer_price" => 63.0,
+      "headline" =>
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
+      "description" =>
+        "From its medieval origins to the digital era, learn everything there is to know about the ubiquitous lorem ipsum passage.",
+      "priority" => 1,
+      "core_product_id" => 40,
+    ],
+    46 => [
       "offer_product_id" => 48,
       "offer_price" => 99.0,
       "headline" =>
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
       "description" =>
         "From its medieval origins to the digital era, learn everything there is to know about the ubiquitous lorem ipsum passage.",
+      "priority" => 2,
+      "core_product_id" => 39,
+    ],
+    47 => [
+      "offer_product_id" => 42,
+      "offer_price" => 14.0,
+      "headline" =>
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
+      "description" =>
+        "From its medieval origins to the digital era, learn everything there is to know about the ubiquitous lorem ipsum passage.",
+      "priority" => 3,
+      "core_product_id" => 47,
     ],
   ];
+}
+/*
+add_action("wp_footer", function () {
+  echo "<pre>";
+
+  foreach (WC()->cart->get_cart() as $cart_item) {
+    print_r($cart_item["product_id"]);
+    print_r($cart_item);
+  }
+});
+*/
+
+function getActiveOffer(array $cart_items)
+{
+  $bump_matrix = dx_get_product_bump_config();
+  $active_offer = null;
+
+  # Collect all CORE product IDs present in the cart
+  $cart_product_ids = [];
+
+  foreach ($cart_items as $cart_item) {
+    if (
+      isset($cart_item["is_order_bump"]) &&
+      $cart_item["is_order_bump"] === true
+    ) {
+      continue;
+    }
+
+    array_push($cart_product_ids, $cart_item["product_id"]);
+  }
+
+  $potential_offers = [];
+
+  # Evaluate matching TRIGGERS in the cart
+  foreach ($cart_product_ids as $pid) {
+    if (array_key_exists($pid, $bump_matrix)) {
+      # POTENTIAL OFFERS
+      array_push($potential_offers, $bump_matrix[$pid]);
+    }
+  }
+
+  # If potential offer products are already added in the cart manually then filter them out from the potential offers list
+
+  $potential_offers = array_filter(
+    $potential_offers,
+    fn($offer) => !in_array($offer["offer_product_id"], $cart_product_ids),
+  );
+
+  # If there are multiple OFFER PRODUCTS stored inside POTENTIAL OFFERS list then SORT them by PRIORITY ( 0 -> has the highest priority )
+  if (empty($potential_offers)) {
+    return;
+  }
+  uasort($potential_offers, fn($a, $b) => $a["priority"] - $b["priority"]);
+
+  $active_offer = array_values($potential_offers)[0];
+
+  return $active_offer;
 }
 
 /*
@@ -27,32 +106,13 @@ add_action(
 
 function dx_product_order_bump_render_ui()
 {
-  $bump_matrix = dx_get_product_bump_config();
-  $active_offer = null;
   $core_product_id = 0;
 
-  # Collect all core product IDs present in the cart
-  $cart_product_ids = [];
-  foreach (WC()->cart->get_cart() as $cart_item) {
-    $cart_product_ids[] = $cart_item["product_id"];
-  }
+  $checked = WC()->session->get("apply_product_bump")
+    ? 'checked="checked"'
+    : "";
 
-  # Evaluate matching triggers
-  foreach ($cart_product_ids as $pid) {
-    if (array_key_exists($pid, $bump_matrix)) {
-      # Potential offer
-      $potential_offer = $bump_matrix[$pid];
-
-      # TODO: Only add products if it is not already added to the cart manually
-      if (!in_array($potential_offer["offer_product_id"], $cart_product_ids)) {
-        $active_offer = $potential_offer;
-        $core_product_id = $pid;
-        break;
-      }
-    }
-  }
-
-  $session_active = WC()->session->get("apply_product_bump");
+  /*
   if (!$active_offer && !$session_active) {
     return;
   }
@@ -65,7 +125,13 @@ function dx_product_order_bump_render_ui()
       }
     }
   }
-  if (!$active_offer) {
+*/
+
+  $active_offer = getActiveOffer(WC()->cart->get_cart());
+
+  $session_active = WC()->session->get("apply_product_bump");
+
+  if (!$active_offer && !$session_active) {
     return;
   }
 
@@ -74,10 +140,11 @@ function dx_product_order_bump_render_ui()
   if (!$offer_product) {
     return;
   }
-  $checked = WC()->session->get("apply_product_bump")
-    ? 'checked="checked"'
-    : "";
+  $core_product_id = $active_offer["core_product_id"];
 
+  $session_active = WC()->session->get("apply_product_bump");
+
+  # Details of the OFFER PRODUCT
   $currency = get_woocommerce_currency_symbol();
   $reg_price = (float) $offer_product->get_regular_price();
   $offer_price = (float) $active_offer["offer_price"];
@@ -102,10 +169,10 @@ function dx_product_order_bump_render_ui()
       <div style="margin-top: 4px">
         <input
           type="checkbox"
-          id="dx_product_bump_checkbox"
+          id="dx_product_order_bump_checkbox"
           value="1"
-          <?php echo $checked; ?>
-          style="transform: scale(1.3); cursor: pointer"
+          <?php echo $checked; ?>      
+          style="transform: scale(1.5); cursor: pointer"
         />
       </div>
 
@@ -133,7 +200,7 @@ function dx_product_order_bump_render_ui()
             font-weight: 600;
           "
         >
-          <?php echo esc_html($active_offer["headline"]); ?>
+          <?php echo esc_html($active_offer["headline"]); ?>     
         </h4>
         <p
           style="
@@ -174,6 +241,7 @@ function dx_product_order_bump_render_ui()
               border: 1px solid #eee;
             "
           />
+          
           <div style="flex: 1">
             <div
               style="
@@ -184,6 +252,7 @@ function dx_product_order_bump_render_ui()
               "
             >
               <?php echo esc_html($offer_product->get_name()); ?>
+              Product name
             </div>
             <div style="font-size: 13px">
               <span
@@ -207,10 +276,11 @@ function dx_product_order_bump_render_ui()
     </div>
   </div>
 
+
   <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function () {
       document.body.addEventListener("change", function (e) {
-        if (e.target && e.target.id === "dx_product_bump_checkbox") {
+        if (e.target && e.target.id === "dx_product_order_bump_checkbox") {
           const formData = new FormData();
           formData.append("action", "toggle_product_bump");
           formData.append("checked", e.target.checked ? 1 : 0);
@@ -226,7 +296,8 @@ function dx_product_order_bump_render_ui()
       });
     });
   </script>
-  <?php
+
+<?php
 }
 
 # 2) Handle the AJAX Request
@@ -249,67 +320,67 @@ add_action(
 
 function dx_apply_product_order_bump_rules($cart)
 {
+  # Only run on Checkout Page
   if (is_admin() && !defined("DOING_AJAX")) {
     return;
   }
+  $offer_product_id = 0;
+  $core_product_id = 0;
 
-  $bump_matrix = dx_get_product_bump_config();
-  $cart_contents = $cart->get_cart_contents();
-
-  # Find any trigger core items inside the current basket
-  $present_core_ids = [];
-  foreach ($cart_contents as $item) {
-    if (array_key_exists($item["product_id"], $bump_matrix)) {
-      $present_core_ids[] = $item["product_id"];
-    }
+  $active_offer = getActiveOffer($cart->get_cart_contents());
+  if (empty($active_offer)) {
+    return;
   }
+  $offer_product_id = $active_offer["offer_product_id"];
+  $offer_product_price = $active_offer["offer_price"];
+  $core_product_id = $active_offer["core_product_id"];
 
-  $target_offer_id = 0;
-  $target_offer_price = 0.0;
-
-  if (!empty($present_core_ids)) {
-    $active_core_id = $present_core_ids[0];
-    $target_offer_id = $bump_matrix[$active_core_id]["offer_product_id"];
-    $target_offer_price = $bump_matrix[$active_core_id]["offer_price"];
+  if (!WC()->session) {
+    return;
   }
 
   $session_active = WC()->session->get("apply_product_bump");
 
   # Inject product if box is ticked AND core product exists
 
-  if ($session_active && $target_offer_id !== 0) {
-    # Add a unique stamp to the product added from the order bump
-    $bump_cart_id = $cart->generate_cart_id(
-      $target_offer_id,
-      0,
-      [],
-      ["is_order_bump" => true],
+  if ($session_active && $offer_product_id !== 0 && $core_product_id !== 0) {
+    # Add a UNIQUE STAMP to the OFFER PRODUCT (added from the order bump)
+    $order_bump_cart_id = $cart->generate_cart_id(
+      $offer_product_id, # Product ID
+      0, # variation ID
+      [], # Variation
+      ["is_order_bump" => true], # Cart Item Data
     );
-    $cart_item_key = $cart->find_product_in_cart($bump_cart_id);
 
+    $cart_item_key = $cart->find_product_in_cart($order_bump_cart_id); # Returns CART ITEM KEY
     if (!$cart_item_key) {
       $cart_item_key = $cart->add_to_cart(
-        $target_offer_id,
-        1,
-        0,
-        [],
-        ["is_order_bump" => true],
-      );
-      $cart_contents = $cart->get_cart_contents();
+        $offer_product_id, # Product ID
+        1, # Quantity
+        0, # Variation ID
+        [], # Variation
+        ["is_order_bump" => true], # Cart Item Data
+      ); # Also returns CART ITEM KEY
     } else {
       # Disallow the users to increase offer products quantity (force quantity to 1)
 
       if (
-        isset($cart_contents[$cart_item_key]) &&
-        $cart_contents[$cart_item_key]["quantity"] !== 1
+        isset($cart->get_cart_contents()[$cart_item_key]) &&
+        $cart->get_cart_contents()[$cart_item_key]["quantity"] !== 1
       ) {
-        $cart->set_quantity($cart_item_key, 1, false);
+        $cart->set_quantity(
+          $cart_item_key, # Cart Item Key
+          1, # Quantity
+          false, # Refresh totals
+        );
       }
     }
 
     # Apply distinct pricing override to stamp items
-    if (isset($cart_contents[$cart_item_key])) {
-      $cart_contents[$cart_item_key]["data"]->set_price($target_offer_price);
+    if (isset($cart->cart_contents[$cart_item_key])) {
+      $cart->cart_contents[$cart_item_key]["data"]->set_price(
+        $offer_product_price,
+      );
     }
   } else {
     # Remove offer product when core product is removed (or box is unchecked)
@@ -321,5 +392,32 @@ function dx_apply_product_order_bump_rules($cart)
         $cart->remove_cart_item($key);
       }
     }
+    WC()->session->set("apply_product_bump", false);
+  }
+}
+
+# 4)
+add_action(
+  "woocommerce_cart_item_removed",
+  "dx_detect_bump_removal_from_cart",
+  10,
+  2,
+);
+function dx_detect_bump_removal_from_cart(string $cart_item_key, object $cart)
+{
+  if (!WC()->session) {
+    return;
+  }
+
+  $removed_item = isset($cart->removed_cart_contents[$cart_item_key])
+    ? $cart->removed_cart_contents[$cart_item_key]
+    : null;
+
+  if (
+    $removed_item &&
+    isset($removed_item["is_order_bump"]) &&
+    $removed_item["is_order_bump"] === true
+  ) {
+    WC()->session->set("apply_product_bump", false);
   }
 }
