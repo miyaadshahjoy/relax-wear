@@ -4,32 +4,29 @@ function dx_get_product_bump_config()
 {
   return [
     39 => [
-      "offer_product_id" => 45,
+      "offer_product_id" => 45, // Sunglasses
       "offer_price" => 63.0,
-      "headline" =>
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
+      "headline" => "Shade your eyes, elevate your style.",
       "description" =>
-        "From its medieval origins to the digital era, learn everything there is to know about the ubiquitous lorem ipsum passage.",
+        "Classic design meets modern UV protection. Whether you're hitting the beach or driving into the sunset, do it with effortless confidence.",
       "priority" => 1,
       "core_product_id" => 40,
     ],
     46 => [
-      "offer_product_id" => 48,
-      "offer_price" => 99.0,
-      "headline" =>
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
+      "offer_product_id" => 48, // Long sleeve T-Shirt
+      "offer_price" => 17.5,
+      "headline" => "The ultimate everyday layer.",
       "description" =>
-        "From its medieval origins to the digital era, learn everything there is to know about the ubiquitous lorem ipsum passage.",
+        "Crafted from ultra-soft, breathable cotton, this long-sleeve tee offers the perfect balance of casual comfort and versatile style for any season.",
       "priority" => 2,
       "core_product_id" => 39,
     ],
     47 => [
-      "offer_product_id" => 42,
+      "offer_product_id" => 42, // Beanie
       "offer_price" => 14.0,
-      "headline" =>
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
+      "headline" => "Stay warm. Look sharp.",
       "description" =>
-        "From its medieval origins to the digital era, learn everything there is to know about the ubiquitous lorem ipsum passage.",
+        "Don't let the chill ruin your outfit. This snug, knit beanie delivers essential warmth and a clean look that complements any winter wardrobe.",
       "priority" => 3,
       "core_product_id" => 47,
     ],
@@ -157,7 +154,7 @@ function dx_product_order_bump_render_ui()
   <div
     class="dx-standalone-bump-box"
     style="
-      border: 2px dashed #0071e3;
+      border: 2px dashed #046bd2;
       padding: 20px;
       margin: 25px 0;
       background-color: #f5fafd;
@@ -179,7 +176,7 @@ function dx_product_order_bump_render_ui()
       <div style="flex: 1">
         <span
           style="
-            background: #0071e3;
+            background: #046bd2;
             color: #fff;
             font-size: 11px;
             font-weight: 700;
@@ -218,9 +215,9 @@ function dx_product_order_bump_render_ui()
           style="
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             background: #fff;
-            padding: 12px;
+            padding: 8px;
             border-radius: 6px;
             border: 1px solid #e3e3e8;
           "
@@ -234,8 +231,8 @@ function dx_product_order_bump_render_ui()
             ); ?>"
             alt=""
             style="
-              width: 50px;
-              height: 50px;
+              width: 60px;
+              height: 60px;
               object-fit: cover;
               border-radius: 4px;
               border: 1px solid #eee;
@@ -246,7 +243,7 @@ function dx_product_order_bump_render_ui()
             <div
               style="
                 font-weight: 600;
-                color: #1d1d1f;
+                color: #343a40;
                 font-size: 14px;
                 margin-bottom: 2px;
               "
@@ -258,16 +255,16 @@ function dx_product_order_bump_render_ui()
               <span
                 style="
                   text-decoration: line-through;
-                  color: #86868b;
+                  color: #868e96;
                   margin-right: 6px;
                 "
                 ><?php echo $reg_price; ?></span
               >
-              <span style="color: #bf4800; font-weight: 700; margin-right: 10px"
+              <span style="color: #d9480f; font-weight: 700; margin-right: 10px; font-size: 18px;"
                 ><?php echo $offer_price; ?></span
               >
               <?php if ($saved_amount > 0): ?>
-                <span style="color: #1d1d1f; font-weight: 500; background: #e3f2fd; padding: 2px 6px; border-radius: 3px; font-size: 11px;">Save <?php echo $saved_amount; ?></span>
+                <span style="color: #343a40; font-weight: 500; background: #e3f2fd; padding: 2px 6px; border-radius: 3px; font-size: 11px;">Save <?php echo $saved_amount; ?></span>
               <?php endif; ?>
             </div>
           </div>
