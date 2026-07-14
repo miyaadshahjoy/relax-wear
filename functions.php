@@ -10,8 +10,8 @@ function astra_child_enqueue_styles()
 }
 add_action("wp_enqueue_scripts", "astra_child_enqueue_styles");
 
-require_once "inc/order-bump.php";
-// require_once "inc/bundle-offer.php";
+// require_once "inc/order-bump.php";
+require_once "inc/bundle-offer.php";
 
 ############################################################################################
 /* 

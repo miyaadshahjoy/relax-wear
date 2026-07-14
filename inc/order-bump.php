@@ -3,6 +3,7 @@
 function dx_get_product_bump_config()
 {
   return [
+    # Hoodie
     39 => [
       "offer_product_id" => 45, // Sunglasses
       "offer_price" => 63.0,
@@ -12,6 +13,7 @@ function dx_get_product_bump_config()
       "priority" => 1,
       "core_product_id" => 40,
     ],
+    # Hoodie with Pocket
     46 => [
       "offer_product_id" => 48, // Long sleeve T-Shirt
       "offer_price" => 17.5,
@@ -21,6 +23,7 @@ function dx_get_product_bump_config()
       "priority" => 2,
       "core_product_id" => 39,
     ],
+    # Hoodie with Zipper
     47 => [
       "offer_product_id" => 42, // Beanie
       "offer_price" => 14.0,
@@ -156,13 +159,13 @@ function dx_product_order_bump_render_ui()
     style="
       border: 2px dashed #046bd2;
       padding: 20px;
-      margin: 25px 0;
+      margin: 24px 0;
       background-color: #f5fafd;
       border-radius: 8px;
       font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     "
   >
-    <div style="display: flex; gap: 15px; align-items: flex-start">
+    <div style="display: flex; gap: 16px; align-items: flex-start">
       <div style="margin-top: 4px">
         <input
           type="checkbox"
@@ -178,16 +181,16 @@ function dx_product_order_bump_render_ui()
           style="
             background: #046bd2;
             color: #fff;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 700;
-            padding: 3px 8px;
+            padding: 4px 8px;
             border-radius: 3px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             display: inline-block;
             margin-bottom: 8px;
           "
-          >Special Upgrade</span
+          >Special Offer!</span
         >
         <h4
           style="
@@ -249,7 +252,6 @@ function dx_product_order_bump_render_ui()
               "
             >
               <?php echo esc_html($offer_product->get_name()); ?>
-              Product name
             </div>
             <div style="font-size: 13px">
               <span
@@ -315,7 +317,7 @@ add_action(
   "dx_apply_product_order_bump_rules",
 );
 
-function dx_apply_product_order_bump_rules($cart)
+function dx_apply_product_order_bump_rules(object $cart)
 {
   # Only run on Checkout Page
   if (is_admin() && !defined("DOING_AJAX")) {
