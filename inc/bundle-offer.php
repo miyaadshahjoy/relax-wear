@@ -496,7 +496,6 @@ function dx_apply_bundle_offer_order_bump_rules(object $cart)
     }
   }
 }
-
 # 4) Handle cart item removal
 add_action(
   "woocommerce_cart_item_removed",

@@ -8,10 +8,39 @@ function astra_child_enqueue_styles()
   // Load the parent theme's stylesheet
   wp_enqueue_style("parent-style", get_template_directory_uri() . "/style.css");
 }
+
 add_action("wp_enqueue_scripts", "astra_child_enqueue_styles");
 
+/*
+add_action("wp_enqueue_scripts", function () {
+  wp_enqueue_script(
+    "oto-offer-page",
+    get_stylesheet_directory_uri() . "/assets/js/offer-page.js",
+    [],
+    "1.0.0",
+    true,
+  );
+});
+*/
 // require_once "inc/order-bump.php";
-require_once "inc/bundle-offer.php";
+// require_once "inc/bundle-offer.php";
+
+# Models
+require_once get_stylesheet_directory() . "/inc/OTO_OffersTable.php";
+require_once get_stylesheet_directory() . "/inc/OTO_EventsTable.php";
+require_once get_stylesheet_directory() . "/inc/OTO_ChainsTable.php";
+
+# Services
+require_once get_stylesheet_directory() . "/inc/OTO_OfferUrl.php";
+require_once get_stylesheet_directory() . "/inc/OTO_Pricing.php";
+require_once get_stylesheet_directory() . "/inc/OTO_Token.php";
+require_once get_stylesheet_directory() . "/inc/OTO_OfferResolver.php";
+require_once get_stylesheet_directory() . "/inc/OTO_ChainNavigator.php";
+
+# Controllers
+require_once get_stylesheet_directory() . "/inc/OTO_FunnelController.php";
+require_once get_stylesheet_directory() . "/inc/OTO_AjaxHandler.php";
+require_once get_stylesheet_directory() . "/inc/OTO_OfferShortcode.php";
 
 ############################################################################################
 /* 
@@ -274,8 +303,8 @@ add_action(
 );
 
 function dx_wc_fluentcrm_segmentation_bridge(
-  $order_id,
-  $old_status,
+  int $order_id,
+  string $old_status,
   string $new_status,
   object $order,
 ) {
