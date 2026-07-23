@@ -1,4 +1,5 @@
 // /astra-child/assets/js/offer-page.js
+// Refactored: done
 /**
  * OTO offer page — accept/decline click handling.
  *
@@ -17,6 +18,11 @@
     if (!container || !container.dataset.otoToken) {
       return;
     }
+
+    const buttons = container.querySelectorAll("button");
+    buttons.forEach(function (btn) {
+      btn.disabled = false;
+    });
 
     const acceptButton = container.querySelector('[data-oto-action="accept"]');
     const declineButton = container.querySelector(
@@ -99,8 +105,8 @@
    * request that's guaranteed to fail the same way again.
    */
   function handleFailure(json, clickedButton, allButtons, originalLabel) {
-    const message = otoOfferData.i18n.genericError;
-    const isAlreadyProcessed = false;
+    let message = otoOfferData.i18n.genericError;
+    let isAlreadyProcessed = false;
 
     if (json && json.data && json.data.message) {
       message = json.data.message;
@@ -133,7 +139,7 @@
       return;
     }
 
-    const messageEl = container.querySelector(".oto-offer__message");
+    let messageEl = container.querySelector(".oto-offer__message");
 
     if (!messageEl) {
       messageEl = document.createElement("p");

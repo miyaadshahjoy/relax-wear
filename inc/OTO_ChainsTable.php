@@ -1,4 +1,6 @@
 <?php
+// /astra-child/inc/OTO_ChainsTable.php
+// Refactoring: done
 /**
  * OTO Chains Tables
  *
@@ -16,7 +18,7 @@ if (!defined("ABSPATH")) {
   exit(); // No direct access.
 }
 
-class OtoChainsTable
+class OTO_ChainsTable
 {
   const DB_VERSION = "1.0.0";
   const OPTION_KEY = "oto_chains_db_version";
@@ -174,8 +176,3 @@ class OtoChainsTable
     return empty($chain[$key]) ? null : (int) $chain[$key];
   }
 }
-
-# Wire up activation and update-check hooks:
-
-# register_activation_hook( __FILE__, array( 'OTO_Chains_Table', 'maybe_create_table' ) );
-# add_action( 'plugins_loaded', array( 'OTO_Chains_Table', 'maybe_create_table' ) );

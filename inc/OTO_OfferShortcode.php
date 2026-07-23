@@ -1,5 +1,6 @@
 <?php
-# astra-child/inc/OfferShortcode.php
+// astra-child/inc/OfferShortcode.php
+// Refactored: done
 /**
  * Offer shortcode — [oto_offer] — renders the current OTO step's offer,
  * which is meant to be dropped into a blank/Canvas-template page
@@ -37,7 +38,7 @@ class OTO_OfferShortcode
   {
     wp_enqueue_script(
       "oto-offer-page",
-      get_stylesheet_directory_uri() . "assets/js/offer-page.js",
+      get_stylesheet_directory_uri() . "/assets/js/offer-page.js",
       [],
       "1.0.0",
       true, // Run in footer -> true
@@ -81,9 +82,7 @@ class OTO_OfferShortcode
       return self::render_error_state($context->get_error_message());
     }
 
-    // Log the view now — after resolution succeeds, so a broken
-    // or expired token never pollutes wp_oto_events with a
-    // phantom 'viewed' row for an offer that was never shown.
+    # Log the view now — after resolution succeeds, so a broken or expired token never pollutes wp_oto_events (wp_ + oto_events) with a phantom 'viewed' row for an offer that was never shown.
     OTO_EventsTable::log_viewed([
       "order_id" => $context["token"]["order_id"],
       "chain_id" => $context["token"]["chain_id"],
@@ -165,13 +164,13 @@ class OTO_OfferShortcode
 
 				<?php if ($pricing["savings"] > 0): ?>
 					<span class="oto-offer__savings">
-            <?php /* translators: %s: amount saved, formatted as currency. */
-            echo wp_kses_post(
-              sprintf(
-                __("You save %s", "astra-child"),
-                wc_price($pricing["savings"]),
-              ),
-            ); ?>
+              <?php /* translators: %s: amount saved, formatted as currency. */
+              echo wp_kses_post(
+                sprintf(
+                  __("You save %s", "astra-child"),
+                  wc_price($pricing["savings"]),
+                ),
+              ); ?>
 					</span>
 				<?php endif; ?>
 			</div>

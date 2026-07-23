@@ -1,4 +1,6 @@
 <?php
+// /astra-child/inc/OTO_Pricing.php
+// Refactoring: done
 /**
  * Pricing service — computes an offer's original total, final
  * price, and savings from its price_type/price_value, based on

@@ -1,4 +1,6 @@
 <?php
+// /astra-child/inc/OTO_EventsTable.php
+// Refactored: done
 /**
  * OTO Events Table
  *
@@ -21,7 +23,6 @@ class OTO_EventsTable
    * when this differs from the stored option.
    */
   const DB_VERSION = "1.0.0";
-
   const OPTION_KEY = "oto_events_db_version";
 
   /**
@@ -197,8 +198,7 @@ class OTO_EventsTable
   }
 
   /**
-   * Returns viewed/accepted/declined/abandoned counts for a given
-   * offer, for the acceptance-rate reporting FR-5.4 implies.
+   * Returns viewed/accepted/declined/abandoned counts for a given offer, for the acceptance-rate reporting FR-5.4 implies.
    *
    * @param int $offer_id
    * @return array Associative array keyed by action.
@@ -230,8 +230,3 @@ class OTO_EventsTable
     return $stats;
   }
 }
-
-# Wire up activation and update-check hooks:
-
-# register_activation_hook( __FILE__, array( 'OTO_Events_Table', 'maybe_create_table' ) );
-# add_action( 'plugins_loaded', array( 'OTO_Events_Table', 'maybe_create_table' ) );

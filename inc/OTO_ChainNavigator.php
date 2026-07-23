@@ -1,4 +1,6 @@
 <?php
+// /astra-child/inc/OTO_ChainNavigator.php
+// Refactoring: done
 /**
  * Chain navigator — walks a chain's steps starting from a given
  * point, skipping any step whose offer is inactive or already
@@ -17,7 +19,7 @@ if (!defined("ABSPATH")) {
   exit(); // No direct access.
 }
 
-class ChainNavigator
+class OTO_ChainNavigator
 {
   /**
    * Finds the first valid step at or after $from_step.
@@ -37,13 +39,13 @@ class ChainNavigator
       return null; // Ran out of steps.
     }
 
-    $offer_id = OtoChainsTable::get_step_offer_id($chain, $from_step);
+    $offer_id = OTO_ChainsTable::get_step_offer_id($chain, $from_step);
 
     if (!$offer_id) {
       return null; // This chain doesn't have a step this deep.
     }
 
-    $offer = OtoOffersTable::get($offer_id);
+    $offer = OTO_OffersTable::get($offer_id);
 
     if (!$offer || !$offer["active"]) {
       return self::find_next_valid_step(

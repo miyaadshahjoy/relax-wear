@@ -1,4 +1,6 @@
 <?php
+// /astra-child/inc/OTO_FunnelController.php
+// Refactoring: done
 /**
  * Funnel controller — hooks into order completion and decides
  * whether an OTO funnel applies to this order, redirecting the
@@ -13,7 +15,7 @@ if (!defined("ABSPATH")) {
   exit(); // No direct access.
 }
 
-class FunnelController
+class OTO_FunnelController
 {
   /**
    * Order meta key used to guard against re-triggering the funnel
@@ -73,13 +75,13 @@ class FunnelController
   {
     $order_product_ids = self::get_order_product_ids($order);
 
-    $chain = ChainsTable::get_chain_for_products($order_product_ids);
+    $chain = OTO_ChainsTable::get_chain_for_products($order_product_ids);
 
     if (!$chain) {
       return; // No OTO chain applies to this order.
     }
 
-    $starting_point = ChainNavigator::find_next_valid_step(
+    $starting_point = OTO_ChainNavigator::find_next_valid_step(
       $chain,
       1,
       $order_product_ids,
@@ -118,7 +120,7 @@ class FunnelController
     $order->update_meta_data(self::STARTED_META_KEY, time());
     $order->save();
 
-    $token_url = Token::build_offer_url(OfferUrl::page_url($offer), [
+    $token_url = OTO_Token::build_offer_url(OTO_OfferUrl::page_url($offer), [
       "order_id" => $order->get_id(),
       "chain_id" => $chain["id"],
       "offer_id" => $offer["id"],

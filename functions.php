@@ -26,22 +26,71 @@ add_action("wp_enqueue_scripts", function () {
 // require_once "inc/bundle-offer.php";
 
 # Models
-require_once get_stylesheet_directory() . "/inc/OTO_OffersTable.php";
-require_once get_stylesheet_directory() . "/inc/OTO_EventsTable.php";
-require_once get_stylesheet_directory() . "/inc/OTO_ChainsTable.php";
+require_once get_stylesheet_directory() . "/inc/OTO_OffersTable.php"; // Refactoring: done
+require_once get_stylesheet_directory() . "/inc/OTO_EventsTable.php"; // Refactoring: done
+require_once get_stylesheet_directory() . "/inc/OTO_ChainsTable.php"; // Refactoring: done
 
 # Services
-require_once get_stylesheet_directory() . "/inc/OTO_OfferUrl.php";
-require_once get_stylesheet_directory() . "/inc/OTO_Pricing.php";
-require_once get_stylesheet_directory() . "/inc/OTO_Token.php";
-require_once get_stylesheet_directory() . "/inc/OTO_OfferResolver.php";
-require_once get_stylesheet_directory() . "/inc/OTO_ChainNavigator.php";
+require_once get_stylesheet_directory() . "/inc/OTO_OfferUrl.php"; // Refactoring: done
+require_once get_stylesheet_directory() . "/inc/OTO_Pricing.php"; // Refactoring: done
+require_once get_stylesheet_directory() . "/inc/OTO_Token.php"; // Refactoring: done
+require_once get_stylesheet_directory() . "/inc/OTO_OfferResolver.php"; // Refactoring: done
+require_once get_stylesheet_directory() . "/inc/OTO_ChainNavigator.php"; // Refactoring: done
 
 # Controllers
-require_once get_stylesheet_directory() . "/inc/OTO_FunnelController.php";
-require_once get_stylesheet_directory() . "/inc/OTO_AjaxHandler.php";
-require_once get_stylesheet_directory() . "/inc/OTO_OfferShortcode.php";
+require_once get_stylesheet_directory() . "/inc/OTO_FunnelController.php"; // Refactoring: done
+require_once get_stylesheet_directory() . "/inc/OTO_AjaxHandler.php"; // Refactoring: done
+require_once get_stylesheet_directory() . "/inc/OTO_OfferShortcode.php"; // Refactoring: done
 
+add_action("after_setup_theme", function () {
+  if (!class_exists("WooCommerce")) {
+    return;
+  }
+
+  OTO_OffersTable::maybe_create_table();
+  OTO_EventsTable::maybe_create_table();
+  OTO_ChainsTable::maybe_create_table();
+
+  if (!wp_next_scheduled("oto_abandoned_sweep")) {
+    wp_schedule_event(time(), "oto_fifteen_minutes", "oto_abandoned_sweep");
+  }
+
+  OTO_FunnelController::init();
+  OTO_AjaxHandler::init();
+  OTO_OfferShortcode::init();
+});
+
+# Cron Schedules
+add_filter("cron_schedules", function ($schedules) {
+  $schedules["oto_fifteen_minutes"] = [
+    "interval" => 15 * MINUTE_IN_SECONDS,
+    "display" => "Every 15 minutes (OTO abandoned-session sweep)",
+  ];
+  return $schedules;
+});
+
+# Cron jobs
+add_action("oto_abandoned_sweep", function () {
+  OTO_EventsTable::mark_abandoned(30);
+});
+
+add_action("init", function () {
+  $timestamp = wp_next_scheduled("oto_abandoned_sweep");
+  if ($timestamp) {
+    error_log(
+      "OTO cron: scheduled, next run at " . date("Y-m-d H:i:s", $timestamp),
+    );
+  } else {
+    error_log("OTO cron: NOT scheduled");
+  }
+});
+
+// add_action("init", function () {
+//   delete_option("oto_offers_db_version");
+//   delete_option("oto_events_db_version");
+//   delete_option("oto_chains_db_version");
+//   error_log("OTO: version options deleted");
+// });
 ############################################################################################
 /* 
     |> add_shortcode('shortcode_name', 'function_name');

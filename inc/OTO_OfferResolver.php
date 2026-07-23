@@ -1,4 +1,7 @@
 <?php
+
+// /astra-child/inc/OTO_OfferResolver.php
+// Refactoring: done
 /**
  * Offer resolver — verifies a raw token's signature, expiry, and
  * then cross-checks it against the database (order and offer both
@@ -29,7 +32,7 @@ class OTO_OfferResolver
    */
   public static function resolve(string $raw_token)
   {
-    $token = OtoToken::verify($raw_token);
+    $token = OTO_Token::verify($raw_token);
 
     if (is_wp_error($token)) {
       return $token;
@@ -40,23 +43,23 @@ class OTO_OfferResolver
     if (!($order instanceof WC_Order)) {
       return new WP_Error(
         "oto_order_not_found",
-        __("We could not find your order.", "your-plugin"),
+        __("We could not find your order.", "astra-child"),
       );
     }
 
-    $offer = OtoOffersTable::get($token["offer_id"]);
+    $offer = OTO_OffersTable::get($token["offer_id"]);
 
     if (!$offer) {
       return new WP_Error(
         "oto_offer_not_found",
-        __("This offer is no longer available.", "your-plugin"),
+        __("This offer is no longer available.", "astra-child"),
       );
     }
 
     if (!$offer["active"]) {
       return new WP_Error(
         "oto_offer_inactive",
-        __("This offer is no longer available.", "your-plugin"),
+        __("This offer is no longer available.", "astra-child"),
       );
     }
 

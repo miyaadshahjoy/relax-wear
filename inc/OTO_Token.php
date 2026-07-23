@@ -1,4 +1,6 @@
 <?php
+// /astra-child/inc/OTO_Token.php
+// Refactoring: done
 /*
   # OTO Token 
  
@@ -30,7 +32,7 @@ if (!defined("ABSPATH")) {
   exit(); // No direct access.
 }
 
-class OtoToken
+class OTO_Token
 {
   /*
    How long a token stays valid, in seconds. Keep this in step

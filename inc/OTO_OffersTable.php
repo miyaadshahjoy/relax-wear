@@ -1,4 +1,6 @@
 <?php
+// /astra-child/inc/OTO_OffersTable.php
+// Refactoring: done
 /**
  * OTO Offers Tables
  *
@@ -16,7 +18,7 @@ if (!defined("ABSPATH")) {
   exit(); // No direct access.
 }
 
-class OtoOffersTable
+class OTO_OffersTable
 {
   const DB_VERSION = "1.0.0";
   const OPTION_KEY = "oto_offers_db_version";
@@ -29,6 +31,7 @@ class OtoOffersTable
 
   public static function maybe_create_table()
   {
+    error_log("Offer table created");
     if (get_option(self::OPTION_KEY) === self::DB_VERSION) {
       return;
     }
@@ -39,10 +42,10 @@ class OtoOffersTable
 
     $sql = "CREATE TABLE {$table_name} (
 			id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-			title VARCHAR(255) NOT NULL,                     # Offer title 
-			type VARCHAR(255) NOT NULL DEFAULT 'single',     # type -> single | bundle 
-			product_ids TEXT NOT NULL,                       # Array of product IDs in JSON format
-			price_type VARCHAR(255) NOT NULL DEFAULT 'fixed  # price_type -> fixed | percent_off | bundle_price
+			title VARCHAR(255) NOT NULL,                      
+			type VARCHAR(255) NOT NULL DEFAULT 'single',     
+			product_ids TEXT NOT NULL,                       
+			price_type VARCHAR(255) NOT NULL DEFAULT 'fixed',
 			price_value DECIMAL(10,2) NOT NULL DEFAULT 0.00,
 			downsell_offer_id BIGINT UNSIGNED DEFAULT NULL,  # self-referencing (points to another row in this same table).
 			template_id VARCHAR(255) DEFAULT NULL,
@@ -138,8 +141,3 @@ class OtoOffersTable
     return $row;
   }
 }
-
-# Wire up activation and update-check hooks:
-
-# register_activation_hook( __FILE__, array( 'OTO_Offers_Table', 'maybe_create_table' ) );
-# add_action( 'plugins_loaded', array( 'OTO_Offers_Table', 'maybe_create_table' ) );

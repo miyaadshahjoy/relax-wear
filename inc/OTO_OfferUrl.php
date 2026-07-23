@@ -1,4 +1,6 @@
 <?php
+// /astra-child/inc/OTO_OfferUrl.php
+// Refactoring: done
 /**
  * Offer URL resolver — resolves an offer's base page URL (before
  * a token is attached). Originally inline in Controller\FunnelController;
@@ -15,7 +17,7 @@ if (!defined("ABSPATH")) {
   exit(); // No direct access.
 }
 
-class OfferUrl
+class OTO_OfferUrl
 {
   /**
    * @param array $offer
@@ -23,6 +25,11 @@ class OfferUrl
    */
   public static function page_url(array $offer)
   {
+    # info: add_query_arg() -> used to rebuild an existing URL by appending a new query arg
+    # add_query_arg( 'key', 'value', 'http://example.com' );
+
+    # info: home_url() -> returns the site's home URL
+    # home_url("/oto-offer/"); -> returns the site's home URL + "/oto-offer/"
     return add_query_arg("oto_offer", $offer["id"], home_url("/oto-offer/"));
   }
 }
